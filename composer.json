@@ -1,0 +1,17 @@
+{
+  "name": "kotletta-tt/beejee-tasker",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Kotletta-TT",
+      "email": "assimilation13cd@gmail.com"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {"App\\": "app"}
+  }
+}
