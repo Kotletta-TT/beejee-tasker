@@ -31,4 +31,15 @@ class Model
         }
         return $tasksList;
     }
+
+    public static function setTask($data) {
+
+        $feedback = array();
+        $db = DB::getConnection();
+        $stmt = "INSERT INTO tasks (username, email, text) VALUES (:username, :email, :text)";
+        $query = $db->prepare($stmt);
+        $query->execute($data);
+
+        return true;
+    }
 }

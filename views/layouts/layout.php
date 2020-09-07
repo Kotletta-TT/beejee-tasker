@@ -8,13 +8,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <title>BeeJee tasker</title>
+    <title>BeeJee Tasker</title>
   </head>
   <body>
     <div class="container center">
         <!-- Content here -->
         <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">BeeJee tasker</a>
+            <a class="navbar-brand" href="/">BeeJee Tasker</a>
               <a class="btn btn-outline-success" href="/add">Добавить задачу</a>
               <a class="btn btn-outline-secondary" href="/login"">Войти</a>
           </nav>
