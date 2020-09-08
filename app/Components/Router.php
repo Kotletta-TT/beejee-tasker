@@ -43,9 +43,8 @@ class Router
                 $segments = explode('/', $path);
                 $controllerName = $this->prefix_controllers . ucfirst(array_shift($segments).'Controller');
                 $actionName = 'action' . ucfirst(array_shift($segments));
-                $testArray = array();
                 $runController = new $controllerName;
-                $runController->$actionName($testArray);
+                $runController->$actionName();
                 break;
             }
         }

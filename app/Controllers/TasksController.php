@@ -9,14 +9,12 @@ class TasksController
 {
 
 
-    public function actionIndex($params)
+    public function actionIndex()
     {
-        $tasksList = array();
-        $tasksList = Model::getTasksList($params);
-        // ДЛЯ ТЕСТОВ
-        $tasksList['count'] = 9;
-        $tasksList['page'] = $params['page'];
-        $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/index.php', $tasksList);
+        if (!empty($_GET['order'])) $_SESSION['order'] = $_GET['order'];
+        if (!empty($_GET['sortby'])) $_SESSION['sortby'] = $_GET['sortby'];
+        $data = Model::getTasksList();
+        $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/index.php', $data);
 
     }
 
