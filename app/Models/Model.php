@@ -34,9 +34,9 @@ class Model
         while ($row = $stmt->fetch()) {
 
             $tasksList['tasks'][$i]['id'] = $row['id'];
-            $tasksList['tasks'][$i]['email'] = $row['email'];
-            $tasksList['tasks'][$i]['username'] = $row['username'];
-            $tasksList['tasks'][$i]['text'] = $row['text'];
+            $tasksList['tasks'][$i]['email'] = htmlentities($row['email']);
+            $tasksList['tasks'][$i]['username'] = htmlentities($row['username']);
+            $tasksList['tasks'][$i]['text'] = htmlentities($row['text']);
             $tasksList['tasks'][$i]['status'] = $row['status'];
             $tasksList['tasks'][$i]['is_edit'] = $row['is_edit'];
             $i++;
@@ -48,9 +48,13 @@ class Model
     public static function setTask($data) {
 
         $db = DB::getConnection();
+        extract($data);
         $stmt = "INSERT INTO tasks (username, email, text) VALUES (:username, :email, :text)";
         $stmt = $db->prepare($stmt);
-        $stmt->execute($data);
+        $stmt->bindParam(':username', $user, \PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
+        $stmt->bindParam(':text', $text, \PDO::PARAM_STR);
+        $stmt->execute();
 
         return true;
     }
