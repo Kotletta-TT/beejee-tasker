@@ -6,7 +6,7 @@
         <select class="custom-select" id="sortby" name="sortby">
           <option value="username" <?=($data['sortby'] == 'name') ? 'selected' : ''?>>По имени</option>
           <option value="email" <?=($data['sortby'] == 'email') ? 'selected' : ''?>>По почте</option>
-          <option value="is_completed" <?=($data['sortby'] == 'status') ? 'selected' : ''?>>По статусу</option>
+          <option value="status" <?=($data['sortby'] == 'status') ? 'selected' : ''?>>По статусу</option>
         </select>
         <select class="custom-select" id="order" name="order">
           <option value="asc" <?=($data['order'] == 'asc') ? 'selected' : ''?>>По возрастанию</option>
@@ -29,7 +29,7 @@
             <div class="card-body">
               <h5 class="card-title"><?=$value['username']?></h5>
               <p class="card-text"><?=$value['text']?></p>
-              <?=($_SESSION['admin']) ? '<a href="/edit" class="btn btn-dark">Редактировать</a>' : ''?>
+              <?=($_SESSION['admin']) ? '<a href="/edit?id=' . $value['id'] . '" class="btn btn-dark">Редактировать</a>' : ''?>
               <p class="card-text"><small class="text-white"><?=($value['is_edit']) ? 'Отредактированно' : 'Не редактировалось'?></small></p>
             </div>
           </div>

@@ -47,13 +47,25 @@ class Model
 
     public static function setTask($data) {
 
-        $feedback = array();
         $db = DB::getConnection();
         $stmt = "INSERT INTO tasks (username, email, text) VALUES (:username, :email, :text)";
         $stmt = $db->prepare($stmt);
         $stmt->execute($data);
 
         return true;
+    }
+
+    public static function updateTask($data) {
+        $db = DB::getConnection();
+        extract($data);
+        $stmt = "UPDATE tasks SET `username`= :username, `email`= :email, `text`= :text, `status`= :status, is_edit=1 WHERE `id`= :id";
+        $stmt = $db->prepare($stmt);
+        $stmt->bindParam(':username', $user, \PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
+        $stmt->bindParam(':text', $text, \PDO::PARAM_STR);
+        $stmt->bindParam(':status', $status, \PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
     }
 
     public static function sortValid ($sortby)
@@ -76,6 +88,16 @@ class Model
         $stmt = "SELECT * FROM users WHERE username = ?";
         $stmt = $db->prepare($stmt);
         $stmt->execute([$user]);
+        return $stmt->fetch();
+    }
+
+    public static function getTaskById($id)
+    {
+        $db = DB::getConnection();
+        $stmt = "SELECT * FROM tasks WHERE `id` = :id";
+        $stmt = $db->prepare($stmt);
+        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->execute();
         return $stmt->fetch();
     }
 }
