@@ -26,14 +26,11 @@ class LoginController
             if (password_verify($password, $find_user['password'])) {
                 $_SESSION['admin'] = true;
                 header("Location: /");
-            }
-            else {
+            } else {
                 $feedback['errors']['password'] = 'Неверный пароль';
                 $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/login.php', $feedback);
             }
-        }
-
-        else {
+        } else {
             $feedback['errors']['username'] = 'Нет такого пользователя';
             $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/login.php', $feedback);
         }
@@ -45,7 +42,8 @@ class LoginController
         header("Location: /");
     }
 
-    public function render($layout, $template, $data='') {
+    public function render($layout, $template, $data = '')
+    {
         include $layout;
     }
 }

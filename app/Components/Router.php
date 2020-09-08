@@ -31,7 +31,7 @@ class Router
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~$uriPattern~", $uri)) {
                 $segments = explode('/', $path);
-                $controllerName = $this->prefix_controllers . ucfirst(array_shift($segments).'Controller');
+                $controllerName = $this->prefix_controllers . ucfirst(array_shift($segments) . 'Controller');
                 $actionName = 'action' . ucfirst(array_shift($segments));
                 $runController = new $controllerName;
                 $runController->$actionName();

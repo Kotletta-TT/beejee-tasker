@@ -32,7 +32,8 @@ class TasksController
             $success = Model::setTask($query_data);
 
         }
-        $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/add.php', ['success' => $success, 'errors' => $errors]);
+        $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/add.php',
+            ['success' => $success, 'errors' => $errors]);
     }
 
     public function actionEdit()
@@ -43,6 +44,7 @@ class TasksController
         $id = $_GET['id'];
         $_SESSION['itemId'] = $id;
         $item = Model::getTaskById($id);
+        $_SESSION['text'] = $item['text'];
         $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/edit.php', $item);
 
     }
@@ -54,21 +56,26 @@ class TasksController
             $validData = $this->validPlaces();
             $id = $_SESSION['itemId'];
             extract($validData);
+            $is_edit = (int)($_SESSION['text'] == $text) ? 0 : 1;
             if (empty($errors)) {
-                $query_data = compact('user', 'email', 'text', 'status', 'id');
+                $query_data = compact('user', 'email', 'text', 'status', 'is_edit', 'id');
                 Model::updateTask($query_data);
                 unset($_SESSION['itemId']);
+                unset($_SESSION['text']);
                 header('Location: /');
             }
             $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/edit.php', ['errors' => $errors]);
+        } else {
+            header('Location: /login');
         }
     }
 
-    public function render($layout, $template, $data='') {
+    public function render($layout, $template, $data = '')
+    {
         include $layout;
     }
 
-    public function validPlaces ()
+    public function validPlaces()
     {
         $errors = array();
         $user = $_POST['inputUsername'] ?? null;
@@ -76,7 +83,7 @@ class TasksController
         $text = $_POST['inputText'] ?? null;
 
         if (!$user) $errors['username'] = 'Заполните правильно поле User';
-        if (!filter_var($email,FILTER_VALIDATE_EMAIL)) $errors['email'] = 'Заполните правильно поле Email';
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email'] = 'Заполните правильно поле Email';
         if (!$text) $errors['text'] = 'Заполните поле текст';
         return ['user' => $user, 'email' => $email, 'text' => $text, 'errors' => $errors];
     }

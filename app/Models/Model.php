@@ -6,28 +6,26 @@ use App\Components\DB as DB;
 
 class Model
 {
-    public static function getTasksList ()
+    public static function getTasksList()
     {
         $countPageItems = 3;
         $page = $_GET['page'] ?? 1;
         $tasksList = array();
         $tasksList['countPages'] = self::countPages($countPageItems);
-        $tasksList['sortby'] = $_SESSION['sortby'] ?? $_GET['sortby'] ??  'username';
+        $tasksList['sortby'] = $_SESSION['sortby'] ?? $_GET['sortby'] ?? 'username';
         $tasksList['order'] = $_SESSION['order'] ?? $_GET['order'] ?? 'asc';
         $offset = ($page - 1) * $countPageItems;
         $db = DB::getConnection();
         $sortby = self::sortValid($tasksList['sortby']);
         $order = $tasksList['order'];
         if ($order == 'desc') {
-            $stmt = $db->prepare("SELECT * FROM tasks ORDER BY ".$sortby." DESC LIMIT 3 OFFSET :offset");
-        }
-        else {
-            $stmt = $db->prepare("SELECT * FROM tasks ORDER BY ".$sortby." ASC LIMIT 3 OFFSET :offset");
+            $stmt = $db->prepare("SELECT * FROM tasks ORDER BY " . $sortby . " DESC LIMIT 3 OFFSET :offset");
+        } else {
+            $stmt = $db->prepare("SELECT * FROM tasks ORDER BY " . $sortby . " ASC LIMIT 3 OFFSET :offset");
         }
 
         $stmt->bindParam(':offset', $offset, \PDO::PARAM_INT);
         $stmt->execute();
-
 
 
         $i = 0;
@@ -45,7 +43,8 @@ class Model
         return $tasksList;
     }
 
-    public static function setTask($data) {
+    public static function setTask($data)
+    {
 
         $db = DB::getConnection();
         extract($data);
@@ -59,26 +58,29 @@ class Model
         return true;
     }
 
-    public static function updateTask($data) {
+    public static function updateTask($data)
+    {
         $db = DB::getConnection();
         extract($data);
-        $stmt = "UPDATE tasks SET `username`= :username, `email`= :email, `text`= :text, `status`= :status, is_edit=1 WHERE `id`= :id";
+        $stmt = "UPDATE tasks SET `username`= :username, `email`= :email, 
+                `text`= :text, `status`= :status, `is_edit`= :is_edit WHERE `id`= :id";
         $stmt = $db->prepare($stmt);
         $stmt->bindParam(':username', $user, \PDO::PARAM_STR);
         $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
         $stmt->bindParam(':text', $text, \PDO::PARAM_STR);
         $stmt->bindParam(':status', $status, \PDO::PARAM_INT);
+        $stmt->bindParam(':is_edit', $is_edit, \PDO::PARAM_INT);
         $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
     }
 
-    public static function sortValid ($sortby)
+    public static function sortValid($sortby)
     {
         $sortWhiteList = ['username', 'email', 'status'];
         return in_array($sortby, $sortWhiteList) ? $sortby : 'username';
     }
 
-    public static function countPages ($countPageItems)
+    public static function countPages($countPageItems)
     {
         $db = DB::getConnection();
         $stmt = "SELECT * FROM tasks";
