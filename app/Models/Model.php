@@ -70,4 +70,13 @@ class Model
         return ceil(count($stmt->fetchAll()) / $countPageItems);
     }
 
+    public static function getUser($user)
+    {
+        $db = DB::getConnection();
+        $stmt = "SELECT * FROM users WHERE username = ?";
+        $stmt = $db->prepare($stmt);
+        $stmt->execute([$user]);
+        return $stmt->fetch();
+    }
 }
+

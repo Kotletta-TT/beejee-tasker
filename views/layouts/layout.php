@@ -16,8 +16,12 @@
         <nav class="navbar navbar-dark bg-dark">
             <a class="navbar-brand" href="/">BeeJee Tasker</a>
               <a class="btn btn-outline-success" href="/add">Добавить задачу</a>
-              <a class="btn btn-outline-secondary" href="/login"">Войти</a>
-          </nav>
+            <?php if ($_SESSION['admin'] == true): ?>
+              <a class="btn btn-outline-secondary" href="/logout"">Выйти</a>
+            <?php else: ?>
+                <a class="btn btn-outline-secondary" href="/login">Войти</a>
+            <?php endif; ?>
+        </nav>
 
           <main>
             <?php include ($template); ?>

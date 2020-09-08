@@ -25,19 +25,9 @@ class Router
         }
     }
 
-    private function getParams()
-    {
-        $params = array();
-        $params['sortby'] = $_SESSION['sortby'] ?? $_GET['sortby'] ?? 'username';
-        $params['order'] = $_SESSION['order'] ?? $_GET['order'] ?? 'asc';
-        return $params;
-    }
-
-
     public function run()
     {
         $uri = $this->getURI();
-        $params =$this->getParams();
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~$uriPattern~", $uri)) {
                 $segments = explode('/', $path);

@@ -21,9 +21,4 @@ class DB
         $db = new \PDO($dsn, $dbuser, $dbpass, $opt);
         return $db;
     }
-
-    public static function addTask()
-    {
-
-    }
 }

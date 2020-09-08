@@ -29,7 +29,7 @@
             <div class="card-body">
               <h5 class="card-title"><?=$value['username']?></h5>
               <p class="card-text"><?=$value['text']?></p>
-              <?=($data['is_admin']) ? '<a href="/edit" class="btn btn-dark">Редактировать</a>' : ''?>
+              <?=($_SESSION['admin']) ? '<a href="/edit" class="btn btn-dark">Редактировать</a>' : ''?>
               <p class="card-text"><small class="text-white"><?=($value['is_edit']) ? 'Отредактированно' : 'Не редактировалось'?></small></p>
             </div>
           </div>
