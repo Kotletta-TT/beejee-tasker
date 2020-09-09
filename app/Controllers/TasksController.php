@@ -28,7 +28,7 @@ class TasksController
         $validData = $this->validPlaces();
         extract($validData);
         if (empty($errors)) {
-            $query_data = compact($user, $email, $text);
+            $query_data = compact('user', 'email', 'text');
             $success = Model::setTask($query_data);
 
         }

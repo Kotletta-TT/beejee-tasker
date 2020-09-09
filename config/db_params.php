@@ -1,8 +1,8 @@
 <?php
 return array(
-    'host' => '172.20.0.2',
-    'dbname' => 'tasker',
-    'dbuser' => 'root',
-    'dbpass' => 'roottasker',
+    'host' => 'localhost',
+    'dbname' => 'beejeetaskr',
+    'dbuser' => 'beejeetaskr',
+    'dbpass' => 'Beejeetaskr7',
     'charset' => 'utf8'
 );
