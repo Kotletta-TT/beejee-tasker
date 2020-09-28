@@ -11,10 +11,18 @@ class TasksController
 
     public function actionIndex()
     {
+        $page = $_GET['page'] ?? 1;
+        $countPageItems = 3;
         if (!empty($_GET['order'])) $_SESSION['order'] = $_GET['order'];
         if (!empty($_GET['sortby'])) $_SESSION['sortby'] = $_GET['sortby'];
-        $data = Model::getTasksList();
-        $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/index.php', $data);
+        $sortby = $_SESSION['sortby'] ?? $_GET['sortby'] ?? 'username';
+        $order = $_SESSION['order'] ?? $_GET['order'] ?? 'asc';
+        $offset = ($page - 1) * $countPageItems;
+        $params = array('page' => $page, 'countPageItems' => $countPageItems, 'sortby' => $sortby, 'order' => $order,
+            'offset' => $offset);
+        $tasks = Model::getTasksList($params);
+        $tasks['page'] = $page;
+        $this->render(ROOT . '/views/layouts/layout.php', ROOT . '/views/index.php', $tasks);
 
     }
 
@@ -70,7 +78,7 @@ class TasksController
         }
     }
 
-    public function render($layout, $template, $data = '')
+    public function render($layout, $template, $tasksData = '')
     {
         include $layout;
     }

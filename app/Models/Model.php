@@ -6,27 +6,16 @@ use App\Components\DB as DB;
 
 class Model
 {
-    public static function getTasksList()
+    public static function getTasksList($params)
     {
-        $countPageItems = 3;
-        $page = $_GET['page'] ?? 1;
         $tasksList = array();
-        $tasksList['countPages'] = self::countPages($countPageItems);
-        $tasksList['sortby'] = $_SESSION['sortby'] ?? $_GET['sortby'] ?? 'username';
-        $tasksList['order'] = $_SESSION['order'] ?? $_GET['order'] ?? 'asc';
-        $offset = ($page - 1) * $countPageItems;
+        $tasksList['countPages'] = self::countPages($params['countPageItems']);
         $db = DB::getConnection();
-        $sortby = self::sortValid($tasksList['sortby']);
-        $order = $tasksList['order'];
-        if ($order == 'desc') {
-            $stmt = $db->prepare("SELECT * FROM tasks ORDER BY " . $sortby . " DESC LIMIT 3 OFFSET :offset");
-        } else {
-            $stmt = $db->prepare("SELECT * FROM tasks ORDER BY " . $sortby . " ASC LIMIT 3 OFFSET :offset");
-        }
-
-        $stmt->bindParam(':offset', $offset, \PDO::PARAM_INT);
+        $sortby = self::sortValid($params['sortby']);
+        $order = $params['order'];
+        $stmt = $db->prepare("SELECT * FROM tasks ORDER BY " . $sortby .  " " . $order . " LIMIT 3 OFFSET :offset");
+        $stmt->bindParam(':offset', $params['offset'], \PDO::PARAM_INT);
         $stmt->execute();
-
 
         $i = 0;
         while ($row = $stmt->fetch()) {
@@ -83,9 +72,9 @@ class Model
     public static function countPages($countPageItems)
     {
         $db = DB::getConnection();
-        $stmt = "SELECT * FROM tasks";
-        $stmt = $db->query($stmt);
-        return ceil(count($stmt->fetchAll()) / $countPageItems);
+        $stmt = "SELECT COUNT(*) FROM tasks";
+        $allTaks = $db->query($stmt)->fetchColumn();
+        return ceil($allTaks / $countPageItems);
     }
 
     public static function getUser($user)
